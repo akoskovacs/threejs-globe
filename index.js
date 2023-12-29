@@ -26,8 +26,8 @@ const fragment = `
 
   uniform float u_time;
 
-  vec3 colorA = vec3(0.196, 0.631, 0.886);
-  vec3 colorB = vec3(0.192, 0.384, 0.498);
+  vec3 colorA = vec3(0.016,0.063,0.086);
+  vec3 colorB = vec3(0.89,0.89,0.89);
 
   void main() {
 
@@ -91,6 +91,43 @@ const setScene = () => {
   mouseDown         = false;
   grabbing          = false;
 
+  var urls = [
+    'dawnmountain-xpos.png',
+    'dawnmountain-xneg.png',
+    'dawnmountain-ypos.png',
+    'dawnmountain-yneg.png',
+    'dawnmountain-zpos.png',
+    'dawnmountain-zneg.png'
+  ];
+
+// wrap it up into the object that we need
+//var cubemap = THREE.ImageUtils.loadTextureCube(urls);
+var cubemap = new THREE.CubeTextureLoader()
+  .setPath('img/')
+  .load(urls);
+// set the format, likely RGB
+// unless you've gone crazy
+//cubemap.format = THREE.RGBFormat;
+
+// following code from https://github.com/mrdoob/three.js/blob/master/examples/webgl_materials_cubemap.html
+//var shader = THREE.ShaderUtils.lib[ "cube" ];
+//shader.uniforms[ "tCube" ].texture = cubemap;
+
+var material = new THREE.MeshBasicMaterial( {
+
+  color: 0xffffff,
+  envMap: cubemap,
+  side: THREE.BackSide,
+  
+});
+const boxSize = 100;
+var skyboxMesh = new THREE.BoxGeometry(boxSize, boxSize, boxSize);
+var skybox = new THREE.Mesh(skyboxMesh, material);
+//skybox.flipSided = true;
+
+//scene.add(skybox);
+
+
   setControls();
   setBaseSphere();
   setShaderMaterial();
@@ -105,7 +142,7 @@ const setControls = () => {
 
   controls                 = new OrbitControls(camera, renderer.domElement);
   controls.autoRotate      = true;
-  controls.autoRotateSpeed = 1.2;
+  controls.autoRotateSpeed = 0.5;
   controls.enableDamping   = true;
   controls.enableRotate    = true;
   controls.enablePan       = false;
@@ -119,9 +156,10 @@ const setBaseSphere = () => {
 
   const baseSphere   = new THREE.SphereGeometry(19.5, 35, 35);
   const baseMaterial = new THREE.MeshStandardMaterial({
-    color:        0x0b2636, 
-    transparent:  true, 
-    opacity:      0.9
+    color:        0x0b1111, 
+    transparent:  false,
+    roughness: 0.5,
+    metalness: 0.5
   });
   baseMesh = new THREE.Mesh(baseSphere, baseMaterial);
   scene.add(baseMesh);
@@ -307,9 +345,11 @@ const mousedown = () => {
 
   if(!isIntersecting) return;
 
+  /*
   materials.forEach(el => {
     gsap.to(el.uniforms.u_maxExtrusion, {value: 1.07});
   });
+  */
 
   mouseDown         = true;
   minMouseDownFlag  = false;
@@ -329,9 +369,11 @@ const mouseup = () => {
   mouseDown = false;
   if(!minMouseDownFlag) return;
 
+  /*
   materials.forEach(el => {
     gsap.to(el.uniforms.u_maxExtrusion, {value: 1.0, duration: 0.15});
   });
+  */
 
   grabbing  = false;
   if(isIntersecting) document.body.style.cursor = 'pointer';

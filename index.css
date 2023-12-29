@@ -9,10 +9,10 @@ html, body {
   height: 100vh;
   margin: 0px;
   padding: 0px;
-  background: #0f2027;
-  background: -webkit-linear-gradient(to top, #0f2027, #203a43, #2c5364);
-  background: linear-gradient(to top, #0f2027, #203a43, #2c5364);
-  color: rgb(49, 98, 127);
+  background: #000000;
+  /* background: -webkit-linear-gradient(to top, #0f2027, #203a43, #2c5364);
+  background: linear-gradient(to top, #0f2027, #203a43, #2c5364); */
+  color: rgb(143, 143, 143);
 }
 
 .canvas {
