@@ -158,8 +158,8 @@ const setBaseSphere = () => {
   const baseMaterial = new THREE.MeshStandardMaterial({
     color:        0x0b1111, 
     transparent:  false,
-    roughness: 0.5,
-    metalness: 0.5
+    roughness: 1,
+    metalness: 1
   });
   baseMesh = new THREE.Mesh(baseSphere, baseMaterial);
   scene.add(baseMesh);
@@ -249,7 +249,7 @@ const setMap = () => {
 
   const setDots = () => {
 
-    const dotDensity  = 2.5;
+    const dotDensity  = 1;
     let   vector      = new THREE.Vector3();
 
     for (let lat = 90, i = 0; lat > -90; lat--, i++) {
@@ -266,7 +266,7 @@ const setMap = () => {
 
         vector = calcPosFromLatLonRad(long, lat);
 
-        const dotGeometry = new THREE.CircleGeometry(0.1, 5);
+        const dotGeometry = new THREE.CircleGeometry(0.15, 10);
         dotGeometry.lookAt(vector);
         dotGeometry.translate(vector.x, vector.y, vector.z);
 
